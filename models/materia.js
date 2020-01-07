@@ -14,7 +14,9 @@ const MateriaSchema = Schema({
     planilla_firmada: Boolean,
     cheque_solicitado: Boolean,
     cheque_recibido: Boolean,
-    cheque_entregado: Boolean
+    cheque_entregado: Boolean,
+    horas_totales: Number,
+    horas_planta: Number
 });
 
 module.exports = mongoose.model('Materia', MateriaSchema);

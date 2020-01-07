@@ -18,6 +18,8 @@ const controller = {
         materia.cheque_solicitado = params.cheque_solicitado;
         materia.cheque_recibido = params.cheque_recibido;
         materia.cheque_entregado = params.cheque_entregado;
+        materia.horas_totales = params.horas_totales;
+        materia.horas_planta = params.horas_planta;
 
         materia.save((err, materia) => {
             if(err) return res.status(500).send({
