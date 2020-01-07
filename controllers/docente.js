@@ -13,6 +13,7 @@ const controller = {
         docente.materias_asignadas = params.materias_asignadas;
         docente.horas_planta = params.horas_planta;
         docente.horas_cubiertas = params.horas_cubiertas;
+        docente.evaluacion_pares = params.evaluacion_pares;
 
         docente.save((err, docente) => {
             if(err) return res.status(500).send({
@@ -21,9 +22,7 @@ const controller = {
             if(!docente) return res.status(404).send({
                 message: 'No se ha podido crear el docente'
             });
-            return res.status(200).send({
-                docente
-            });
+            return res.status(200).send(docente);
         });
     },
 
@@ -37,9 +36,7 @@ const controller = {
             if(!docente) return res.status(404).send({
                 message: 'No se ha podido obtener el docente'
             });
-            return res.status(200).send({
-                docente
-            });
+            return res.status(200).send(docente);
         });
     },
 
@@ -53,9 +50,7 @@ const controller = {
                 message: 'No se ha podido obtener los docentes'
             });
 
-            return res.status(200).send({
-                docentes
-            });
+            return res.status(200).send(docentes);
         });
     },
 
@@ -71,9 +66,7 @@ const controller = {
                 message: 'No se ha podido actualizar el docente'
             });
 
-            return res.status(200).send({
-                docente
-            });
+            return res.status(200).send(docente);
         });
     },
 
@@ -87,9 +80,7 @@ const controller = {
             if(!docente) return res.status(404).send({
                 message: 'No se ha podido eliminar el docente'
             });
-            return res.status(200).send({
-                docente
-            });
+            return res.status(200).send(docente);
         })
     }
 };

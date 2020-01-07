@@ -18,3 +18,4 @@ const MateriaSchema = Schema({
 });
 
 module.exports = mongoose.model('Materia', MateriaSchema);
+

@@ -8,7 +8,8 @@ const DocenteSchema = Schema({
     apellido_materno: String,
     materias_asignadas: Number,
     horas_planta: Number,
-    horas_cubiertas:Number
+    horas_cubiertas:Number,
+    evaluacion_pares: Boolean
 });
 
 module.exports = mongoose.model('Docente', DocenteSchema);

@@ -26,9 +26,7 @@ const controller = {
             if(!materia) return res.status(404).send({
                 message: 'No se ha podido crear la materia'
             });
-            return res.status(200).send({
-                materia
-            });
+            return res.status(200).send(materia);
         });
     },
 
@@ -42,9 +40,7 @@ const controller = {
             if(!materia) return res.status(404).send({
                 message: 'No se ha podido obtener la materia'
             });
-            return res.status(200).send({
-                materia
-            });
+            return res.status(200).send(materia);
         });
     },
 
@@ -58,9 +54,7 @@ const controller = {
                 message: 'No se ha podido obtener las materias'
             });
 
-            return res.status(200).send({
-                materias
-            });
+            return res.status(200).send(materias);
         });
     },
 
@@ -76,9 +70,7 @@ const controller = {
                 message: 'No se ha podido actualizar la materia'
             });
 
-            return res.status(200).send({
-                materia
-            });
+            return res.status(200).send(materia);
         });
     },
 
@@ -92,9 +84,7 @@ const controller = {
             if(!materia) return res.status(404).send({
                 message: 'No se ha podido eliminar la materia'
             });
-            return res.status(200).send({
-                materia
-            });
+            return res.status(200).send(materia);
         })
     }
 };
