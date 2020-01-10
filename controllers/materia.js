@@ -14,6 +14,7 @@ const controller = {
         materia.examen_revisado = params.examen_revisado;
         materia.contrato_impreso = params.contrato_impreso;
         materia.contrato_firmado = params.contrato_firmado;
+        materia.planilla_lista = params.planilla_lista;
         materia.planilla_firmada = params.planilla_firmada;
         materia.cheque_solicitado = params.cheque_solicitado;
         materia.cheque_recibido = params.cheque_recibido;

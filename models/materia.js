@@ -11,6 +11,7 @@ const MateriaSchema = Schema({
     examen_revisado: Boolean,
     contrato_impreso: Boolean,
     contrato_firmado: Boolean,
+    planilla_lista: Boolean,
     planilla_firmada: Boolean,
     cheque_solicitado: Boolean,
     cheque_recibido: Boolean,
