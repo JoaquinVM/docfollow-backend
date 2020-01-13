@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const MateriaSchema = Schema({
     nombre: String,
     id_docente: String,
+    id_jefe_carrera: String,
     inicio: Date,
     fin: Date,
     silabo_subido: Boolean,

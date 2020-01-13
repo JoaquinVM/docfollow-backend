@@ -3,17 +3,7 @@ const Docente = require('../models/docente');
 const controller = {
 
     createDocente: function (req, res) {
-        let docente = new Docente();
-        let params = req.body;
-
-        docente.nombre = params.nombre;
-        docente.segundo_nombre = params.segundo_nombre;
-        docente.apellido_paterno = params.apellido_paterno;
-        docente.apellido_materno = params.apellido_materno;
-        docente.materias_asignadas = params.materias_asignadas;
-        docente.horas_planta = params.horas_planta;
-        docente.horas_cubiertas = params.horas_cubiertas;
-        docente.evaluacion_pares = params.evaluacion_pares;
+        let docente = new Docente(Object.assign(req.body));
 
         docente.save((err, docente) => {
             if(err) return res.status(500).send({

@@ -3,24 +3,7 @@ const Materia = require('../models/materia');
 const controller = {
 
     createMateria: function (req, res) {
-        let materia = new Materia();
-        let params = req.body;
-        materia.nombre = params.nombre;
-        materia.id_docente = params.id_docente;
-        materia.inicio = new Date(params.inicio);
-        materia.fin = new Date(params.fin);
-        materia.silabo_subido = params.silabo_subido;
-        materia.aula_revisada = params.aula_revisada;
-        materia.examen_revisado = params.examen_revisado;
-        materia.contrato_impreso = params.contrato_impreso;
-        materia.contrato_firmado = params.contrato_firmado;
-        materia.planilla_lista = params.planilla_lista;
-        materia.planilla_firmada = params.planilla_firmada;
-        materia.cheque_solicitado = params.cheque_solicitado;
-        materia.cheque_recibido = params.cheque_recibido;
-        materia.cheque_entregado = params.cheque_entregado;
-        materia.horas_totales = params.horas_totales;
-        materia.horas_planta = params.horas_planta;
+        let materia = new Materia(Object.assign(req.body));
 
         materia.save((err, materia) => {
             if(err) return res.status(500).send({
@@ -89,6 +72,21 @@ const controller = {
             });
             return res.status(200).send(materia);
         })
+    },
+
+    getMateriasJefeCarrera: function (req, res){
+        let jefeCarreraId = req.params.id_jefe_carrera;
+        Materia.find({id_jefe_carrera: jefeCarreraId}).exec((err, materias) => {
+            if(err) return res.status(500).send({
+                message: 'Error al obtener las materias'
+            });
+
+            if(!materias) return res.status(404).send({
+                message: 'No se ha podido obtener las materias'
+            });
+
+            return res.status(200).send(materias);
+        });
     }
 };
 
