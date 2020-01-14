@@ -1,4 +1,3 @@
-const moment = require('moment');
 const Usuario = require('../models/usuario');
 const Materia = require('../models/materia');
 const roles = require('../roles');
@@ -26,15 +25,28 @@ const controller = {
                     let atributos = roles[usuario.rol];
                     for(let atributo in atributos){
                         let data = atributos[atributo];
-                        //let type = data.type;
-                        let pendiente = {
-                            materia: materia.nombre,
-                            id_docente: materia.id_docente,
-                            inicio: materia.inicio,
-                            fin: materia.fin,
-                            message: data.message
-                        };
-                        pendientes.push(pendiente);
+                        let type = data.type;
+
+                        if(materia[atributo] === false){
+                            let now = new Date().getTime();
+                            let difInicio = Math.floor((now - materia.inicio.getTime()) / (1000 * 60 * 60 * 24));
+                            let difFinal = Math.floor((now - materia.fin.getTime()) / (1000 * 60 * 60 * 24));
+                            if(
+                                (type === "start" && difInicio >= data.days) ||
+                                (type === "end" && difFinal >=  data.days) ||
+                                (type === "dependency" && !materia[data.dependency])
+
+                            ){
+                                let pendiente = {
+                                    materia: materia.nombre,
+                                    id_docente: materia.id_docente,
+                                    inicio: materia.inicio,
+                                    fin: materia.fin,
+                                    message: data.message
+                                };
+                                pendientes.push(pendiente);
+                            }
+                        }
                     }
                 });
                 return res.status(200).send(pendientes);

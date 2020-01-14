@@ -1,6 +1,6 @@
 let roles = {
   jefe_carrera: {
-    silabo_subido : {
+    silabo_subido: {
       type: "start",
       days: -10,
       message: "El silabo no ha sido revisado"
@@ -11,9 +11,9 @@ let roles = {
       message: "El aula no ha sido revisada"
     },
     examen_revisado: {
-      "type": "start",
-      "days": -10,
-      "message": "Los examenes no han sido revisados"
+      type: "start",
+      days: -10,
+      message: "Los examenes no han sido revisados"
     }
   },
   asistente: {
