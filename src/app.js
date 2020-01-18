@@ -18,10 +18,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', materia_routes);
-app.use('/', docente_routes);
-app.use('/', usuario_routes);
-app.use('/', pendiente_routes);
+app.use('/materias', materia_routes);
+app.use('/docentes', docente_routes);
+app.use('/usuarios', usuario_routes);
+app.use('/pendientes', pendiente_routes);
 
 
 module.exports = app;

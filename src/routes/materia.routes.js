@@ -3,12 +3,12 @@ const MateriaController = require('../controllers/materia.controller');
 
 const router = express.Router();
 
-router.post('/materias', MateriaController.createMateria);
-router.get('/materias', MateriaController.getMaterias);
-router.get('/materia/:id', MateriaController.getMateria);
-router.get('/materias/:id_jefe_carrera', MateriaController.getMateriasJefeCarrera);
-router.put('/materia/:id', MateriaController.updateMateria);
-router.delete('/materia/:id', MateriaController.deleteMateria);
+router.post('/create', MateriaController.createMateria);
+router.get('/getAll', MateriaController.getMaterias);
+router.get('/getOne/:id', MateriaController.getMateria);
+router.get('/getByUserId/:id_jefe_carrera', MateriaController.getMateriasJefeCarrera);
+router.put('/update/:id', MateriaController.updateMateria);
+router.delete('/delete/:id', MateriaController.deleteMateria);
 
 
 
