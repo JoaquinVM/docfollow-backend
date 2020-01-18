@@ -1,5 +1,6 @@
 const express = require('express');
 const MateriaController = require('../controllers/materia.controller');
+const TokenValidation = require('../verifyToken');
 
 const router = express.Router();
 
