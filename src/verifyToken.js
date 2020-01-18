@@ -5,6 +5,14 @@ const response = require('./utils').response;
 const client = new OAuth2Client('602723697704-ucdbgn6m678gf5rkj02npjl2rrcak250.apps.googleusercontent.com');
 var userInfo;
 
+async function getUserInfo(token) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: '602723697704-ucdbgn6m678gf5rkj02npjl2rrcak250.apps.googleusercontent.com',
+    });
+    return ticket.getPayload();
+}
+
 function TokenValidation(req, res, next) {
     const token = req.header('Token');
     if(!token) return req.status(401).send({ message: 'Acceso denegado'});
@@ -22,4 +30,5 @@ function TokenValidation(req, res, next) {
         next();
     });
 }
+
 module.exports = TokenValidation;
