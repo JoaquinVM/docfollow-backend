@@ -15,10 +15,10 @@ async function getUserInfo(token) {
 
 function TokenValidation(req, res, next) {
     const token = req.header('Token');
-    if(!token) return req.status(401).send({ message: 'Acceso denegado'});
+    if(!token) return res.status(401).send({ message: 'Acceso denegado'});
 
     const payload = getUserInfo(token);
-
+    console.log(payload);
     Usuario.findOne({email: payload['email']}).exec((err, user) => {
         if(err) return res.status(500).send({
             message: 'Error de conexion a la base de datos'
