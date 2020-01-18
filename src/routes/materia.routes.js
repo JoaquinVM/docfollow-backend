@@ -3,7 +3,7 @@ const MateriaController = require('../controllers/materia.controller');
 
 const router = express.Router();
 
-router.post('/create', MateriaController.createMateria);
+router.post('/create', TokenValidation, MateriaController.createMateria);
 router.get('/getAll', MateriaController.getMaterias);
 router.get('/getOne/:id', MateriaController.getMateria);
 router.get('/getByUserId/:id_jefe_carrera', MateriaController.getMateriasJefeCarrera);

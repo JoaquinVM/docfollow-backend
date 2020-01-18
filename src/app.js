@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const materia_routes = require('./routes/materia.routes');
-const docente_routes = require('./routes/decente.routes');
+const docente_routes = require('./routes/docente.routes');
 const usuario_routes = require('./routes/usuario.routes');
 const pendiente_routes = require('./routes/pendiente.routes');
 
