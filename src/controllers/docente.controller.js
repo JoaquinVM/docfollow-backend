@@ -1,6 +1,6 @@
 const DocenteController = require('../models/docente.model');
 const Materia = require('../models/materia.model');
-const utils = require('../utils').default_response;
+const utils = require('../utils');
 const default_response = utils.default_response;
 const response = utils.response;
 
