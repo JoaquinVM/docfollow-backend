@@ -2,10 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-const materia_routes = require('./routes/materia');
-const docente_routes = require('./routes/docente');
-const usuario_routes = require('./routes/usuario');
-const pendiente_routes = require('./routes/pendiente');
+const materia_routes = require('./routes/materia.routes');
+const docente_routes = require('./routes/decente.routes');
+const usuario_routes = require('./routes/usuario.routes');
+const pendiente_routes = require('./routes/pendiente.routes');
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());

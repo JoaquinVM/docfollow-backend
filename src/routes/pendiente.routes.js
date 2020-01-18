@@ -1,5 +1,5 @@
 const express = require('express');
-const PendienteController = require('../controllers/pendiente');
+const PendienteController = require('../controllers/pendiente.controller');
 
 const router = express.Router();
 
