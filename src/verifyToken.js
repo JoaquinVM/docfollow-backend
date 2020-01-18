@@ -10,16 +10,15 @@ async function getUserInfo(token) {
         idToken: token,
         audience: '602723697704-ucdbgn6m678gf5rkj02npjl2rrcak250.apps.googleusercontent.com',
     });
-    return ticket.getPayload();
+    userInfo = ticket.getPayload();
+
 }
 
 function TokenValidation(req, res, next) {
     const token = req.header('Token');
     if(!token) return res.status(401).send({ message: 'Acceso denegado'});
 
-    const payload = getUserInfo(token);
-    console.log(payload);
-    Usuario.findOne({email: payload['email']}).exec((err, user) => {
+    Usuario.findOne({email: userInfo['email']}).exec((err, user) => {
         if(err) return res.status(500).send({
             message: 'Error de conexion a la base de datos'
         });
