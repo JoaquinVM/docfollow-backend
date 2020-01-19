@@ -13,6 +13,11 @@ const controller = {
         UsuarioController.findById(usuarioID, default_response(req, res));
     },
 
+    getUsuarioByEmail: function(req, res){
+        let email = req.params.email;
+        UsuarioController.find({email: email}).exec(default_response(req, res));
+    },
+
     getUsuarios : function (req, res) {
         UsuarioController.find({}).exec(default_response(req, res));
     },

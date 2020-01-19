@@ -6,6 +6,7 @@ const router = express.Router();
 router.post('/create', UsuarioController.createUsuario);
 router.get('/getAll', UsuarioController.getUsuarios);
 router.get('/getOne/:id', UsuarioController.getUsuario);
+router.get('/getOneByEmail/:email', UsuarioController.getUsuarioByEmail);
 router.put('/update/:id', UsuarioController.updateUsuario);
 router.delete('/delete/:id', UsuarioController.deleteUsuario);
 

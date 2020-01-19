@@ -19,7 +19,7 @@ function TokenValidation(req, res, next) {
 
     verify(token)
         .then( () => {
-            Usuario.findOne({email: userInfo['email']}).exec((err, user) => {
+            Usuario.findOne({email: userInfo['+']}).exec((err, user) => {
                 if(err) return res.status(500).send({
                     message: 'Error de conexion a la base de datos'
                 });
