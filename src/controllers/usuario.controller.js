@@ -15,7 +15,7 @@ const controller = {
 
     getUsuarioByEmail: function(req, res){
         let email = req.params.email;
-        UsuarioController.find({email: email}).exec(default_response(req, res));
+        UsuarioController.findOne({email: email}).exec(default_response(req, res));
     },
 
     getUsuarios : function (req, res) {
