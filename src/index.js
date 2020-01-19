@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/docfollow', {
     .then(() => {
         console.log("Conexion a la base de datos establecida con exito");
         app.listen(port, () => {
-            console.log("Servidor corriendo correctamente en la url: localhost:3700");
+            console.log(`Servidor corriendo correctamente en la url: localhost:${port}`);
         })
     })
     .catch(err => {
