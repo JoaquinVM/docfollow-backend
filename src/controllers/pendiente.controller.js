@@ -33,7 +33,7 @@ const controller = {
         let usuarioId =  req.params.id_usuario;
 
         Usuario.findById(usuarioId, response(req, res, (req, res, usuario) => {
-            let findData = (usuario.role === 'jefe_carrera') ? {id_jefe_carrera: jefeCarreraId} : {};
+            let findData = (usuario.role === 'jefe_carrera') ? {id_jefe_carrera: usuarioId} : {};
             Materia.find(findData).exec(response(req, res, (req, res, materias) => {
                 let pendientes = [];
                 materias.forEach(materia =>

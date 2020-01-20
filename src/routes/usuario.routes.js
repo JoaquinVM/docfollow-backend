@@ -3,12 +3,12 @@ const UsuarioController = require('../controllers/usuario.controller');
 
 const router = express.Router();
 
-router.post('/create', UsuarioController.createUsuario);
-router.get('/getAll', UsuarioController.getUsuarios);
-router.get('/getOne/:id', UsuarioController.getUsuario);
+router.post('/create', TokenValidation, UsuarioController.createUsuario);
+router.get('/getAll', TokenValidation, UsuarioController.getUsuarios);
+router.get('/getOne/:id', TokenValidation, UsuarioController.getUsuario);
 router.get('/getOneByEmail/:email', UsuarioController.getUsuarioByEmail);
-router.put('/update/:id', UsuarioController.updateUsuario);
-router.delete('/delete/:id', UsuarioController.deleteUsuario);
+router.put('/update/:id', TokenValidation, UsuarioController.updateUsuario);
+router.delete('/delete/:id', TokenValidation, UsuarioController.deleteUsuario);
 
 
 module.exports = router;

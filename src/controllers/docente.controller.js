@@ -13,7 +13,6 @@ const controller = {
 
     getDocente: function(req, res){
         let docenteID = req.params.id;
-
         DocenteController.findById(docenteID, default_response(req, res));
     },
 
