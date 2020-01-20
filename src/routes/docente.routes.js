@@ -1,5 +1,6 @@
 const express = require('express');
 const DocenteController = require('../controllers/docente.controller');
+const TokenValidation = require('../verifyToken');
 
 const router = express.Router();
 
