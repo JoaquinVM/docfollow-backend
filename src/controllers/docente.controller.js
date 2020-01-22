@@ -4,18 +4,19 @@ const utils = require('../utils');
 const default_response = utils.default_response;
 const response = utils.response;
 
-function calcMaterias(req, res, docenteId) {
+async function calcMaterias(req, res, docenteId) {
     let materias_asignadas = 0;
     let horas_cubiertas = 0;
     Materia.find({id_docente: docenteId}).exec(response(req, res, (req, res, materias) => {
         materias.forEach(materia => {
             materias_asignadas += 1;
-            horas_cubiertas += materia.horas_cubiertas;
+            horas_cubiertas += materia.horas_plantas;
         });
         let update = {
             materias_asignadas: materias_asignadas,
             horas_cubiertas: horas_cubiertas
         };
+        console.log(update);
         DocenteController.findByIdAndUpdate(docenteId, update, {new: true}, response(req, res, (req, res, docente) => {
 
         }));
@@ -31,15 +32,11 @@ const controller = {
 
     getDocente: function(req, res){
         let docenteID = req.params.id;
-        calcMaterias(req, res, docenteID);
         DocenteController.findById(docenteID, default_response(req, res));
     },
 
     getDocentes : function (req, res) {
-        DocenteController.find({}).exec(response(req, res, (req, res, docentes) => {
-           docentes.forEach(docente => calcMaterias(req, res, docente._id));
-           return res.status(200).send(docentes);
-        }));
+        DocenteController.find({}).exec(default_response(req, res));
     },
 
     updateDocente: function(req, res){
