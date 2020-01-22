@@ -4,7 +4,7 @@ const TokenValidation = require('../verifyToken');
 
 const router = express.Router();
 
-router.get('/:id_usuario', TokenValidation, PendienteController.getPendientes);
+router.get('/:id_usuario', PendienteController.getPendientes);
 
 
 module.exports = router;

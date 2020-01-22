@@ -5,10 +5,10 @@ const TokenValidation = require('../verifyToken');
 const router = express.Router();
 
 router.post('/create', TokenValidation, MateriaController.createMateria);
-router.get('/getAll', TokenValidation, MateriaController.getMaterias);
+router.get('/getAll', MateriaController.getMaterias);
 router.get('/getOne/:id', TokenValidation, MateriaController.getMateria);
 router.get('/getByUserId/:id_jefe_carrera', TokenValidation, MateriaController.getMateriasJefeCarrera);
-router.put('/update/:id', TokenValidation, MateriaController.updateMateria);
+router.put('/update/:id', MateriaController.updateMateria);
 router.delete('/delete/:id', TokenValidation, MateriaController.deleteMateria);
 
 

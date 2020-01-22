@@ -6,7 +6,7 @@ const response = require('../utils').response;
 function procesarTipo(type, materia, data){
     return  (type === "start" && difDays(materia.inicio) >= data.days) ||
             (type === "end" && difDays(materia.fin) >=  data.days) ||
-            (type === "dependency" && !materia[data.dependency]);
+            (type === "dependency" && materia[data.dependency]);
 }
 
 function difDays(date){

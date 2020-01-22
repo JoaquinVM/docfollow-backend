@@ -1,26 +1,14 @@
 const MateriaController = require('../models/materia.model');
 const Docente = require('../models/docente.model');
 const utils = require('../utils');
-const default_response = utils.default_response();
+const default_response = utils.default_response;
 const response = utils.response();
 
 const controller = {
 
     createMateria: function (req, res) {
         let materia = new MateriaController(Object.assign(req.body));
-        materia.save(response(req, res, (req, res, materia) => {
-            if(materia.id_docente){
-                Docente.findById(id_docente, response(req, res, (req, res, docente) => {
-                    let new_horas = docente.horas_cubiertas + materia.horas_planta;
-                    if(new_horas > docente.horas_planta){
-                        return res.status(400).send({message: 'Se ha superado el limite de horas de planta del docente'})
-                    }
-                    Docente.findByIdAndUpdate(materia.id_docente, {horas_cubiertas: new_horas}, {new: true}, response(req, res, (req, res, doc) => {
-                        return res.status(200).send(materia);
-                    }))
-                }));
-            }
-        }));
+        materia.save(default_response(req, res));
     },
 
     getMateria: function(req, res){

@@ -13,7 +13,7 @@ function response(req, res, func) {
             message: 'No se ha encontrado los datos en la base de datos'
         });
 
-        func(req, res, result);
+        return func(req, res, result);
     }
 }
 
