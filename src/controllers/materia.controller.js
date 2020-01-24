@@ -2,7 +2,7 @@ const MateriaController = require('../models/materia.model');
 const Docente = require('../models/docente.model');
 const utils = require('../utils');
 const default_response = utils.default_response;
-const response = utils.response();
+const response = utils.response;
 
 const controller = {
 
@@ -29,16 +29,7 @@ const controller = {
 
     deleteMateria: function(req, res){
         let materiaId = req.params.id;
-        MateriaController.findByIdAndDelete(materiaId, response(req, res , (req, res, materia) => {
-           if(materia.id_docente){
-               Docente.findById(materia.id_docente, response(req, res, (req, res, docente) => {
-                   let new_horas = docente.horas_cubiertas - materia.horas_planta;
-                   Docente.findByIdAndUpdate(materia.id_docente, {horas_cubiertas: new_horas}, {new: true}, response(req, res, (req, res, doc) => {
-                       return res.status(200).send(materia);
-                   }))
-               }));
-           }
-        }));
+        MateriaController.findByIdAndDelete(materiaId, default_response(req, res));
     },
 
     getMateriasJefeCarrera: function (req, res){
