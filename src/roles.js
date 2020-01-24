@@ -33,26 +33,26 @@ let roles = {
       message: "El contrato no ha sido firmado"
     }
   ],
-  contabilidad: {
-    cheque_solicitado: {
+  contabilidad: [
+    {
       nombre: "cheque_solicitado",
       type: "dependency",
       dependency: "planilla_firmada",
       message: "El cheque no ha sido solicitado"
     },
-    cheque_recibido: {
+    {
       nombre: "cheque_recibido",
       type: "dependency",
       dependency: "cheque_solicitado",
       message: "El cheque no ha sido recibido"
     },
-    cheque_entregado: {
+    {
       nombre: "cheque_entregado",
       type: "dependency",
       dependency: "cheque_recibido",
       message: "El cheque no ha sido entregado"
     }
-  },
+  ],
   registros: [
     {
       nombre: "planilla_lista",
@@ -63,7 +63,8 @@ let roles = {
     {
       nombre: "planilla_firmada",
       type: "dependency",
-      dependency: "La planilla no ha sido firmada"
+      dependency: "planilla_lista",
+      message: "La planilla no ha sido firmada"
     }
   ]
 };

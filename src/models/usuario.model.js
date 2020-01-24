@@ -21,7 +21,11 @@ const UsuarioSchema = Schema({
     segundo_nombre: String,
     apellido_paterno: String,
     apellido_materno: String,
-    email: String,
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
     ci: Number,
     rol: String,
     super_usuario: Boolean,

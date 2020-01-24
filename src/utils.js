@@ -6,9 +6,8 @@ function default_response(req, res) {
 
 function response(req, res, func) {
     return (err, result) => {
-        if(err) console.log(err);
         if(err) return res.status(500).send({
-            message: 'Error de conexion a base de datos'
+            message: err
         });
         if(!result) return res.status(404).send({
             message: 'No se ha encontrado los datos en la base de datos'

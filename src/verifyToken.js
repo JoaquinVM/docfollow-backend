@@ -15,6 +15,7 @@ async function verify(token) {
 
 function TokenValidation(req, res, next) {
     const token = req.header('Token');
+    console.log(token);
     if(!token) return res.status(401).send({ message: 'Acceso denegado'});
 
     verify(token)
@@ -31,7 +32,8 @@ function TokenValidation(req, res, next) {
             });
         })
         .catch(err => {
-            res.status(500).send({message: "Error al iniciar sesion"})
+            console.log(err);
+            res.status(500).send({message: "Acceso denegado"})
         });
 
 }
