@@ -4,7 +4,7 @@ const TokenValidation = require('../verifyToken');
 
 const router = express.Router();
 
-router.post('/create', TokenValidation, UsuarioController.createUsuario);
+router.post('/create', UsuarioController.createUsuario);
 router.get('/getAll', TokenValidation, UsuarioController.getUsuarios);
 router.get('/getOne/:id', TokenValidation, UsuarioController.getUsuario);
 router.get('/getOneByEmail/:email', UsuarioController.getUsuarioByEmail);
