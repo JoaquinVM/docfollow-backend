@@ -5,52 +5,52 @@ const Materia = require('../models/materia.model');
 const DocenteSchema = Schema({
     nombre: {
         type: String,
-        required: true
+        required: [true, 'No se ha proporcionado el nombre'],
+        uppercase: true
     },
     segundo_nombre: {
         type: String,
-        default: ''
+        default: '',
+        uppercase: true
     },
     apellido_paterno: {
         type: String,
-        required: true
+        required: [true, 'No se ha proporcionado el apellido paterno'],
+        uppercase: true
     },
     apellido_materno: {
         type: String,
-        default: ''
+        required: [true, 'No se ha proporcionado el apellido materno'],
+        uppercase: true
     },
     email: {
         type: String,
         unique: [true, 'Este email ya ha sido registrado'],
-        required: [true, 'El  campo email es requerido']
-        //match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Se ha introducido un email no valido']
+        required: [true, 'El  campo email es requerido'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Se ha introducido un email no valido']
     },
     materias_asignadas: {
         type: Number,
         default: 0
     },
-    horas_planta: Number,
-    horas_cubiertas: Number,
-    evaluacion_pares: Boolean
+    horas_planta: {
+        type: Number,
+        required: [true, 'No se han proporcionado las horas de planta']
+    },
+    horas_cubiertas: {
+        type: Number,
+        default: 0,
+        max: [this.horas_planta, 'Las horas cubiertas no pueden ser superiores a las horas de planta']
+    },
+    evaluacion_pares: {
+        type: String,
+        default: false
+    },
+    id_jefe_carrera: {
+        type: String,
+        required: [true, 'Se debe proporcionar un jefe de carrera encargado']
+    }
 });
 
-DocenteSchema.pre('find', function (next) {
-    let materias_asignadas = 0;
-    let horas_cubiertas = 0;
-    Materia.find({id_docente: this._id}).exec((err, materias) => {
-        materias.forEach(materia => {
-            materias_asignadas += 1;
-            horas_cubiertas += materia.horas_planta;
-        });
-        let update = {
-            materias_asignadas: materias_asignadas,
-            horas_cubiertas: horas_cubiertas
-        };
-        this.model.findByIdAndUpdate(this._id, update, {new: true}, (err, docente) => {
-            if(err) next(err);
-            next();
-        });
-    });
-});
 
 module.exports = mongoose.model('Docente', DocenteSchema);

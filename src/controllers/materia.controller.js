@@ -11,6 +11,12 @@ const controller = {
         materia.save(default_response(req, res));
     },
 
+    createMateriasExcel: function (req, res) {
+        console.log('hola');
+        console.log(Object.values(req.body.excel)[6]);
+        return res.status(200).send({m: 'ffef'})
+    },
+
     getMateria: function(req, res){
         let materiaID = req.params.id;
         MateriaController.findById(materiaID, default_response(req, res));

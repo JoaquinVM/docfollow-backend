@@ -7,8 +7,8 @@ const docente_routes = require('./routes/docente.routes');
 const usuario_routes = require('./routes/usuario.routes');
 const pendiente_routes = require('./routes/pendiente.routes');
 
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '10mb', extended:false}));
+app.use(bodyParser.json({limit: '10mb'}));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');

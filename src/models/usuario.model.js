@@ -2,43 +2,103 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PreferenciaMateriaSchema = new Schema({
-    silabo_subido: Boolean,
-    aula_revisada: Boolean,
-    examen_revisado: Boolean,
-    contrato_impreso: Boolean,
-    contrato_firmado: Boolean,
-    planilla_lista: Boolean,
-    planilla_firmada: Boolean,
-    cheque_solicitado: Boolean,
-    cheque_recibido: Boolean,
-    cheque_entregado: Boolean,
-    horas_totales: Boolean,
-    horas_planta: Boolean
+    silabo_subido: {
+        type: Boolean,
+        default: false
+    },
+    aula_revisada: {
+        type: Boolean,
+        default: false
+    },
+    examen_revisado: {
+        type: Boolean,
+        default: false
+    },
+    contrato_impreso: {
+        type: Boolean,
+        default: false
+    },
+    contrato_firmado: {
+        type: Boolean,
+        default: false
+    },
+    planilla_lista: {
+        type: Boolean,
+        default: false
+    },
+    planilla_firmada: {
+        type: Boolean,
+        default: false
+    },
+    cheque_solicitado: {
+        type: Boolean,
+        default: false
+    },
+    cheque_recibido: {
+        type: Boolean,
+        default: false
+    },
+    cheque_entregado: {
+        type: Boolean,
+        default: false
+    },
+    horas_totales: {
+        type: Boolean,
+        default: false
+    },
+    horas_planta: {
+        type: Boolean,
+        default: false
+    },
+    preferencias_pasadas: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const UsuarioSchema = Schema({
-    nombre: String,
-    segundo_nombre: String,
-    apellido_paterno: String,
-    apellido_materno: String,
+    nombre: {
+        type: String,
+        required: [true, 'No se ha proporcionado el campo nombre']
+    },
+    segundo_nombre: {
+        type: String,
+        default: ''
+    },
+    apellido_paterno: {
+        type: String,
+        required: [true, 'No se ha proporcionado el campo apellido paterno']
+    },
+    apellido_materno: {
+        type: String,
+        required: [true, 'No se ha proporcionado el campo apellido materno']
+    },
     email: {
         type: String,
-        required: true,
-        unique: true
+        unique: [true, 'Este email ya ha sido registrado'],
+        required: [true, 'No se ha proporcionado el campo email'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Se ha introducido un email no valido']
     },
-    ci: Number,
-    rol: String,
-    super_usuario: Boolean,
-    preferencias_pendientes: PreferenciaMateriaSchema,
-    preferencias_seguimiento: PreferenciaMateriaSchema,
-    preferencias_materias: PreferenciaMateriaSchema,
-    preferencias_docente: new Schema({
-        email: Boolean,
-        materias_asignadas: Boolean,
-        horas_planta: Boolean,
-        horas_cubiertas:Boolean,
-        evaluacion_pares: Boolean
-    })
+    rol: {
+        type: String,
+        enum: {
+            values: ['jefe_carrera', 'asistente', 'contabilidad', 'registros', 'decano'],
+            message: 'Se ha proporcionado un rol no valido'
+        },
+        required: [true, 'No se ha proporcionado el campo rol']
+    },
+    super_usuario: {
+        type: Boolean,
+        default: false
+    },
+    preferencias: {
+        type: PreferenciaMateriaSchema,
+        requried: [true, 'No se ha proporcionado el campo preferencias']
+    },
+    preferencias_seguimiento: {
+        type: PreferenciaMateriaSchema,
+        requried: [true, 'No se ha proporcionado el campo preferencias de seguimiento']
+    }
 });
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);

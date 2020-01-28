@@ -15,7 +15,6 @@ async function verify(token) {
 
 function TokenValidation(req, res, next) {
     const token = req.header('Token');
-    console.log(token);
     if(!token) return res.status(401).send({ message: 'Acceso denegado'});
 
     verify(token)
