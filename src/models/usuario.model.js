@@ -57,6 +57,10 @@ const UsuarioSchema = Schema({
         type: String,
         required: [true, 'No se ha proporcionado el campo nombre']
     },
+    nombre_corto: {
+        type: String,
+        default: ''
+    },
     segundo_nombre: {
         type: String,
         default: ''
