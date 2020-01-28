@@ -49,10 +49,6 @@ const PreferenciaMateriaSchema = new Schema({
     horas_planta: {
         type: Boolean,
         default: false
-    },
-    preferencias_pasadas: {
-        type: Boolean,
-        default: false
     }
 });
 
@@ -98,6 +94,10 @@ const UsuarioSchema = Schema({
     preferencias_seguimiento: {
         type: PreferenciaMateriaSchema,
         requried: [true, 'No se ha proporcionado el campo preferencias de seguimiento']
+    },
+    ver_pendientes_pasadas: {
+        type: Boolean,
+        default: false
     }
 });
 
