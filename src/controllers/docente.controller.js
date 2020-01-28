@@ -4,22 +4,14 @@ const utils = require('../utils');
 const default_response = utils.default_response;
 const response = utils.response;
 
-async function calcMaterias(docente) {
-    try{
-        let materias_asignadas = 0;
-        let horas_cubiertas = 0;
-        let materias = await Materia.find({id_docente: docente._id}).exec();
-        materias.forEach(materia => {
-            materias_asignadas += 1;
-            horas_cubiertas += materia.horas_plantas;
-        });
-        docente.horas_cubiertas = horas_cubiertas;
-        docente.materias_asignadas = materias_asignadas;
-    }catch(err){
-        throw err;
-    }
-    console.log(docente);
-    return docente;
+function getSemester(){
+    let now = new Date();
+    let year = now.getFullYear();
+    let month = now.getMonth()+1;
+    if(month === 1) year--;
+    let start = (month >= 2 && month <= 7)? year+'-02-1' : year+'-08-01';
+    let end = (month >= 2 && month <= 7)? year+'-07-31' : (year+1)+'-01-31';
+    return {start: new Date(start), end: new Date(end)}
 }
 
 const controller = {
@@ -35,8 +27,14 @@ const controller = {
     },
 
     getDocentes: async function (req, res) {
-        Materia.find({}).exec(response(req, res, (req, res, materias) => {
-            DocenteController.find({}).exec(response(res, res, (req, res, docentes) => {
+        let semester = getSemester();
+        Materia.find({
+            $and: [
+                { inicio: { $gte: semester.start} },
+                { fin: {$lte: semester.end}}
+            ]
+        }).exec(response(req, res, (req, res, materias) => {
+            DocenteController.find().exec(response(res, res, (req, res, docentes) => {
                 let materias_asignadas = {};
                 let horas_cubiertas = {};
                 materias.forEach(materia => {
