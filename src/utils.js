@@ -30,7 +30,18 @@ function response(req, res, func) {
     }
 }
 
+function getSemestre(){
+    let now = new Date();
+    let year = now.getFullYear();
+    let month = now.getMonth()+1;
+    if(month === 1) year--;
+    let start = (month >= 2 && month <= 7)? year+'-02-1' : year+'-08-01';
+    let end = (month >= 2 && month <= 7)? year+'-07-31' : (year+1)+'-01-31';
+    return {start: new Date(start), end: new Date(end)}
+}
+
 module.exports = {
     default_response,
-    response
+    response,
+    getSemestre
 };

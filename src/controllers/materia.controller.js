@@ -3,7 +3,6 @@ const Docente = require('../models/docente.model');
 const utils = require('../utils');
 const default_response = utils.default_response;
 const response = utils.response;
-
 const controller = {
 
     createMateria: function (req, res) {
@@ -11,10 +10,57 @@ const controller = {
         materia.save(default_response(req, res));
     },
 
-    createMateriasExcel: function (req, res) {
-        console.log('hola');
-        console.log(Object.values(req.body.excel)[6]);
-        return res.status(200).send({m: 'ffef'})
+    createMateriasExcel: async function (req, res) {
+        let cols = ['Materia', 'Docente', 'Aula', 'Fecha Inicio', 'Fecha Fin', 'Créditos', 'Creador'];
+        let excelCols = req.body.excel[3];
+        if(!cols.every(val => excelCols.indexOf(val) >= 0)){
+            return res.status(500).send({message: 'El archivo excel no tiene el formato correcto'})
+        }
+        let index = (array, key) => array[excelCols.indexOf(key)];
+        let nombreIndex = excelCols.indexOf('Materia');
+        let docenteIndex = excelCols.indexOf('Docente');
+        let inicioIndex = excelCols.indexOf('Fecha Inicio');
+        let finIndex = excelCols.indexOf('Fecha Fin');
+        let aulaIndex = excelCols.indexOf('Aula');
+        let creditosIndex = excelCols.indexOf('Créditos');
+        let creadorIndex = excelCols.indexOf('Creador');
+
+        let materias = req.body.excel.slice(5).map(materia => {
+            return  {
+                nombre: (materia[nombreIndex]).trim(),
+                id_docente: (materia[docenteIndex]).trim().replace(/\s/g,''),
+                inicio: materia[inicioIndex],
+                fin: materia[finIndex],
+                aula: materia[aulaIndex],
+                horas_totales: materia[creditosIndex]*16,
+                id_jefe_carrera: materia[creadorIndex]
+            }
+        });
+
+        Docente.find({}).exec(response(req, res, (req, res, docentes) => {
+            let nombres = {};
+            docentes.forEach(docente => {
+                let nombre = docente.apellido_paterno + docente.apellido_materno  + docente.nombre;
+                if(docente.segundo_nombre) nombre += docente.segundo_nombre;
+                nombres[nombre] = docente.id;
+            });
+            let materiasValidas = [];
+            let errors = [];
+            let i = 0;
+            materias.forEach(materia => {
+                i++;
+                let nombreDocente = materia.id_docente;
+                if(nombreDocente in nombres){
+                    materia['id_docente'] = nombres[materia.id_docente];
+                    materiasValidas.push(materia);
+                }else{
+                    errors.push(`Error en linea ${i+6}, ${materia.nombre}. Docente:  ${nombreDocente}, no registrado en base de datos`);
+                }
+            });
+            MateriaController.create(materiasValidas, response(req, res, (req, res, materias) => {
+                return res.status(200).send({materias_insertadas:materias, materias_no_insertadas: errors})
+            }))
+        }));
     },
 
     getMateria: function(req, res){
@@ -46,11 +92,8 @@ const controller = {
     getMateriasSemestre: function(req, res){
         let anio = req.params.anio;
         let semestre = req.params.semestre;
-        console.log(typeof semestre);
         let s = new Date(anio + (semestre === '1'? '-02-01' : '-08-01'));
         let e = new Date((semestre === '1'? anio + '-07-31' : (parseInt(anio) + 1) + '-01-31'));
-        console.log(s);
-        console.log(e);
 
         MateriaController.find({
             $and: [
@@ -64,12 +107,8 @@ const controller = {
         let jefeCarreraId = req.params.id_jefe_carrera;
         let anio = req.params.anio;
         let semestre = req.params.semestre;
-        console.log(typeof semestre);
         let s = new Date(anio + (semestre === '1'? '-02-01' : '-08-01'));
         let e = new Date((semestre === '1'? anio + '-07-31' : (parseInt(anio) + 1) + '-01-31'));
-        console.log(s);
-        console.log(e);
-
         MateriaController.find({
             $and: [
                 { inicio: { $gte: s} },

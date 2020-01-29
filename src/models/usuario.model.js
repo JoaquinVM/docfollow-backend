@@ -55,23 +55,28 @@ const PreferenciaMateriaSchema = new Schema({
 const UsuarioSchema = Schema({
     nombre: {
         type: String,
-        required: [true, 'No se ha proporcionado el campo nombre']
+        required: [true, 'No se ha proporcionado el campo nombre'],
+        uppercase: true
     },
     nombre_corto: {
         type: String,
-        default: ''
+        default: '',
+        uppercase: true
     },
     segundo_nombre: {
         type: String,
-        default: ''
+        default: '',
+        uppercase: true
     },
     apellido_paterno: {
         type: String,
-        required: [true, 'No se ha proporcionado el campo apellido paterno']
+        required: [true, 'No se ha proporcionado el campo apellido paterno'],
+        uppercase: true
     },
     apellido_materno: {
         type: String,
-        required: [true, 'No se ha proporcionado el campo apellido materno']
+        required: [true, 'No se ha proporcionado el campo apellido materno'],
+        uppercase: true
     },
     email: {
         type: String,

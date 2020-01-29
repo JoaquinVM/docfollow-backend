@@ -4,16 +4,6 @@ const utils = require('../utils');
 const default_response = utils.default_response;
 const response = utils.response;
 
-function getSemester(){
-    let now = new Date();
-    let year = now.getFullYear();
-    let month = now.getMonth()+1;
-    if(month === 1) year--;
-    let start = (month >= 2 && month <= 7)? year+'-02-1' : year+'-08-01';
-    let end = (month >= 2 && month <= 7)? year+'-07-31' : (year+1)+'-01-31';
-    return {start: new Date(start), end: new Date(end)}
-}
-
 const controller = {
 
     createDocente: function (req, res) {
@@ -27,7 +17,7 @@ const controller = {
     },
 
     getDocentes: async function (req, res) {
-        let semester = getSemester();
+        let semester = utils.getSemestre();
         Materia.find({
             $and: [
                 { inicio: { $gte: semester.start} },
@@ -56,7 +46,6 @@ const controller = {
                     }
                     return docente;
                 });
-                console.log(newDocs);
                 return res.status(200).send(newDocs);
             }))
         }));

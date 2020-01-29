@@ -43,7 +43,7 @@ const DocenteSchema = Schema({
         max: [this.horas_planta, 'Las horas cubiertas no pueden ser superiores a las horas de planta']
     },
     evaluacion_pares: {
-        type: String,
+        type: Boolean,
         default: false
     },
     id_jefe_carrera: {
