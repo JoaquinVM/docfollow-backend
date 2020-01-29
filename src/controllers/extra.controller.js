@@ -56,6 +56,16 @@ const controller = {
                 return res.status(200).send(pendientes);
             }));
         }));
+    },
+
+    generateEmail: function(req, res) {
+        let pms = req.params;
+        utils.sendMail(pms.destino, pms.materia, pms.inicio, pms.fin, pms.correo_id, info=>{
+            res.send(info);
+        }).catch(err => {
+                console.log(error);
+                return res.status(500).send({message: 'Ocurrio un error al enviar el email'});
+        });
     }
 };
 

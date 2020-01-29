@@ -5,7 +5,7 @@ const app = express();
 const materia_routes = require('./routes/materia.routes');
 const docente_routes = require('./routes/docente.routes');
 const usuario_routes = require('./routes/usuario.routes');
-const pendiente_routes = require('./routes/pendiente.routes');
+const pendiente_routes = require('./routes/extra.routes.');
 
 app.use(bodyParser.urlencoded({limit: '10mb', extended:false}));
 app.use(bodyParser.json({limit: '10mb'}));
