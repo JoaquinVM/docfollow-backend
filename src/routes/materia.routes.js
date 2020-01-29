@@ -11,8 +11,8 @@ router.get('/getAll', MateriaController.getMaterias);
 router.get('/getOne/:id', TokenValidation, MateriaController.getMateria);
 router.get('/getByUserId/:id_jefe_carrera', TokenValidation, MateriaController.getMateriasJefeCarrera);
 router.get('/getByUserId/:id_jefe_carrera/:anio/:semestre', TokenValidation, MateriaController.getMateriasSemestreJefeCarrera);
-router.put('/update/:id', MateriaController.updateMateria);
-router.delete('/delete/:id', TokenValidation, MateriaController.deleteMateria);
+router.put('/update/:id/:docente_antiguo_id?', MateriaController.updateMateria);
+router.delete('/delete/:id/:docente_antiguo_id?', TokenValidation, MateriaController.deleteMateria);
 
 
 

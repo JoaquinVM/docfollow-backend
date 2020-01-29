@@ -3,11 +3,31 @@ const Docente = require('../models/docente.model');
 const utils = require('../utils');
 const default_response = utils.default_response;
 const response = utils.response;
+
+function actualizarHoras(req, res, docenteId, materia, sumar, callback){
+    if(!docenteId) return callback();
+    Docente.findById(docenteId, response(req, res, (req, res, docente) => {
+        let coef = sumar? 1 : -1;
+        let nuevas_horas = docente.horas_cubiertas + (coef * materia.horas_planta);
+        if(nuevas_horas > docente.horas_planta){
+            return res.status(500).send({message: 'Las horas cubiertas no pueden sobrepasar las horas totales de planta'})
+        }
+        Docente.findByIdAndUpdate(docenteId,{
+            materias_asignadas: docente.materias_asignadas + coef,
+            horas_cubiertas: docente.horas_cubiertas + (coef + materia.horas_planta)
+        },  {new: true}, response(req, res, (req, res, d) => {
+            callback();
+        }));
+    }));
+}
+
 const controller = {
 
     createMateria: function (req, res) {
         let materia = new MateriaController(Object.assign(req.body));
-        materia.save(default_response(req, res));
+        sumarHoras(req, res, materia.id_docente, materia, true, () => {
+            materia.save(default_response(req, res));
+        });
     },
 
     createMateriasExcel: async function (req, res) {
@@ -75,13 +95,21 @@ const controller = {
     updateMateria: function(req, res){
         let materiaId = req.params.id;
         let update = req.body;
-        MateriaController.findByIdAndUpdate(materiaId, update, {new: true}, default_response(req, res));
 
+        actualizarHoras(req, res, materia.id_docente, materia, true, () => {
+            actualizarHoras(req, res, req.params.docente_antiguo_id, materia, false, () => {
+                MateriaController.findByIdAndUpdate(materiaId, update, {new: true}, default_response(req, res));
+            });
+        });
     },
 
     deleteMateria: function(req, res){
         let materiaId = req.params.id;
-        MateriaController.findByIdAndDelete(materiaId, default_response(req, res));
+
+        actualizarHoras(req, res, req.params.docente_antiguo_id, materia, false, () => {
+            MateriaController.findByIdAndDelete(materiaId, default_response(req, res));
+        });
+
     },
 
     getMateriasJefeCarrera: function (req, res){

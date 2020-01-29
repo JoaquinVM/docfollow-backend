@@ -107,6 +107,14 @@ const UsuarioSchema = Schema({
     ver_pendientes_pasadas: {
         type: Boolean,
         default: false
+    },
+    ver_evaluacion_pares: {
+        type: Boolean,
+        default: true
+    },
+    ver_horas_no_asignadas: {
+        type: Boolean,
+        default: true
     }
 });
 

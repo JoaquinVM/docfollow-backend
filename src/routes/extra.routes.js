@@ -4,7 +4,7 @@ const TokenValidation = require('../verifyToken');
 
 const router = express.Router();
 
-router.get('/:id_usuario', ExtraController.getPendientes);
+router.get('/pendientes/:id_usuario', ExtraController.getPendientes);
 router.post('/sendMail', TokenValidation, ExtraController.generateEmail);
 
 

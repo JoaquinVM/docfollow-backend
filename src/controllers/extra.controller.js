@@ -1,20 +1,17 @@
 const Usuario = require('../models/usuario.model');
 const Materia = require('../models/materia.model');
+const Docente = require('../models/docente.model');
 const roles = require('../roles');
 const utils = require('../utils');
 const response = utils.response;
 
 function deberiaMostrarse(usuario, materia, data){
-
     let typeValidation =   (data.type === "start" && difDays(materia.inicio) >= data.days) ||
             (data.type === "end" && difDays(materia.fin) >=  data.days) ||
             (data.type === "dependency" && materia[data.dependency]);
-
     let contratoValidation = (materia.horas_planta >= materia.horas_totales)? !data.horas_contrato : true;
-
     let preferenciaValidation = usuario.preferencias[data.nombre];
-
-    return typeValidation && contratoValidation && preferenciaValidation;x
+    return typeValidation && contratoValidation && preferenciaValidation;
 }
 
 function difDays(date){
@@ -53,18 +50,40 @@ const controller = {
                 let pendientes = [];
                 materias.forEach(materia =>
                     pendientes = pendientes.concat(generarPendientes(usuario, materia, roles[usuario.rol])));
-                return res.status(200).send(pendientes);
+                Docente.find(findData).exec(response(req, res, (req, res, docentes) => {
+                    docentes.forEach(docente => {
+                        let horas_faltantes = docente.horas_totales - docente.horas_planta;
+                        if(usuario.ver_horas_asignadas && horas_faltantes > 0){
+                            pendientes.push({
+                                materia: '',
+                                id_docente: docente._id,
+                                inicio: '',
+                                fin: '',
+                                message: `${horas_faltantes} horas de planta por asignar`
+                            });
+                        }
+                        if(usuario.ver_evaluacion_pares && !docente.evaluacion_pares){
+                            pendientes.push({
+                                materia: '',
+                                id_docente: docente._id,
+                                inicio: '',
+                                fin: '',
+                                message: `No se ha realizado la evaluacion por pares`
+                            });
+                        }
+                    });
+                }));
             }));
         }));
     },
 
     generateEmail: function(req, res) {
-        let pms = req.params;
-        utils.sendMail(pms.destino, pms.materia, pms.inicio, pms.fin, pms.correo_id, info=>{
-            res.send(info);
+        let pms = req.body;
+        utils.sendMail(pms.destino, pms.materia, pms.inicio.substr(0,10), pms.fin.substr(0,10), pms.asunto, info=>{
+            return res.status(200).send(info);
         }).catch(err => {
-                console.log(error);
-                return res.status(500).send({message: 'Ocurrio un error al enviar el email'});
+            console.log(err);
+            return res.status(500).send({message: 'Ocurrio un error al enviar el email'});
         });
     }
 };

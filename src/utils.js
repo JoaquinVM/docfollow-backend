@@ -1,4 +1,5 @@
 const correos = require('./correos');
+const nodemailer = require('nodemailer');
 
 function default_response(req, res) {
     return response(req, res, (req, res, result) => {
@@ -43,6 +44,8 @@ function getSemestre(){
 }
 
 async function sendMail(destino, materia, inicio, fin, correo_id, callback){
+    console.log(correo_id);
+    console.log(correo_id in correos);
     let correo = correos[correo_id];
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -60,7 +63,10 @@ async function sendMail(destino, materia, inicio, fin, correo_id, callback){
         from: '"Doc-Tracker"',
         to: destino,
         subject: correo.asunto,
-        html: `<p>${correo.mensaje(materia, inicio, fin)}</p>
+        html: `<p>Estimado docente,</p>
+                <p>${correo.mensaje(materia, inicio, fin)}</p>
+                <p>Saludos atentos, </p>
+                <p>DocTracker - Sistema de Gestión de Procedimientos Docentes de la UPB\`</p>
                 <small>Por favor, NO responda a este mensaje, es un envío automático.</small>`
     };
     let info = await transporter.sendMail(mailOptions);
