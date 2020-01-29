@@ -14,7 +14,7 @@ function actualizarHoras(req, res, docenteId, materia, sumar, callback){
         }
         Docente.findByIdAndUpdate(docenteId,{
             materias_asignadas: docente.materias_asignadas + coef,
-            horas_cubiertas: docente.horas_cubiertas + (coef + materia.horas_planta)
+            horas_cubiertas: docente.horas_cubiertas + (coef * materia.horas_planta)
         },  {new: true}, response(req, res, (req, res, d) => {
             callback();
         }));
