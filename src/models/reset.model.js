@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;;
+const Schema = mongoose.Schema;
 
-const ReseSchema = Schema({
+const ResetSchema = Schema({
     evaluacion_pares: {
         type: Date,
         default: '2020-01-01'
@@ -9,8 +9,12 @@ const ReseSchema = Schema({
     semestre: {
         type: Date,
         default: '2020-01-01'
+    },
+    value: {
+        type: String,
+        required: true
     }
 });
 
 
-module.exports = mongoose.model('Docente', DocenteSchema);
+module.exports = mongoose.model('Reset', ResetSchema);
