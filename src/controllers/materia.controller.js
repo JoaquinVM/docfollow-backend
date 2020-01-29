@@ -25,7 +25,7 @@ const controller = {
 
     createMateria: function (req, res) {
         let materia = new MateriaController(Object.assign(req.body));
-        sumarHoras(req, res, materia.id_docente, materia, true, () => {
+        actualizarHoras(req, res, materia.id_docente, materia, true, () => {
             materia.save(default_response(req, res));
         });
     },
