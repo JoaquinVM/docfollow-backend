@@ -96,11 +96,14 @@ const controller = {
         let materiaId = req.params.id;
         let update = req.body;
 
-        actualizarHoras(req, res, materia.id_docente, materia, true, () => {
-            actualizarHoras(req, res, req.params.docente_antiguo_id, materia, false, () => {
-                MateriaController.findByIdAndUpdate(materiaId, update, {new: true}, default_response(req, res));
+        MateriaController.findById(materiaId, response(req, res, (req, res, materia)=> {
+            actualizarHoras(req, res, update.id_docente, update, true, () => {
+                actualizarHoras(req, res, req.params.docente_antiguo_id, materia, false, () => {
+                    MateriaController.findByIdAndUpdate(materiaId, update, {new: true}, default_response(req, res));
+                });
             });
-        });
+        }));
+
     },
 
     deleteMateria: function(req, res){
