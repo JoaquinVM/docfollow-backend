@@ -108,11 +108,11 @@ const controller = {
 
     deleteMateria: function(req, res){
         let materiaId = req.params.id;
-
-        actualizarHoras(req, res, req.params.docente_antiguo_id, materia, false, () => {
-            MateriaController.findByIdAndDelete(materiaId, default_response(req, res));
-        });
-
+        MateriaController.findById(materiaId, response(req, res, (req, res, materia)=> {
+            actualizarHoras(req, res, req.params.docente_antiguo_id, materia, false, () => {
+                MateriaController.findByIdAndDelete(materiaId, default_response(req, res));
+            });
+        }));
     },
 
     getMateriasJefeCarrera: function (req, res){
