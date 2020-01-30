@@ -52,8 +52,8 @@ const controller = {
                     pendientes = pendientes.concat(generarPendientes(usuario, materia, roles[usuario.rol])));
                 Docente.find(findData).exec(response(req, res, (req, res, docentes) => {
                     docentes.forEach(docente => {
-                        let horas_faltantes = docente.horas_totales - docente.horas_planta;
-                        if(usuario.ver_horas_asignadas && horas_faltantes > 0){
+                        let horas_faltantes = docente.horas_planta - docente.horas_cubiertas;
+                        if(usuario.ver_horas_no_asignadas && horas_faltantes > 0){
                             pendientes.push({
                                 materia: '',
                                 id_docente: docente._id,
@@ -72,6 +72,7 @@ const controller = {
                             });
                         }
                     });
+                    return res.status(200).send(pendientes);
                 }));
             }));
         }));
