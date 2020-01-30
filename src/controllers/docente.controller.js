@@ -17,39 +17,38 @@ const controller = {
     },
 
     getDocentes: async function (req, res) {
-        DocenteController.find().exec(default_response(req, res));
-        // let semester = utils.getSemestre();
-        // Materia.find({
-        //     $and: [
-        //         { inicio: { $gte: semester.start} },
-        //         { fin: {$lte: semester.end}}
-        //     ]
-        // }).exec(response(req, res, (req, res, materias) => {
-        //     DocenteController.find().exec(response(res, res, (req, res, docentes) => {
-        //         let materias_asignadas = {};
-        //         let horas_cubiertas = {};
-        //         materias.forEach(materia => {
-        //             let doc = materia.id_docente;
-        //             if(doc){
-        //                 if(!(doc in materias_asignadas)){
-        //                     materias_asignadas[doc] = 0;
-        //                     horas_cubiertas[doc] = 0;
-        //                 }
-        //                 materias_asignadas[doc]++;
-        //                 horas_cubiertas[doc] += materia.horas_planta
-        //             }
-        //         });
-        //         let newDocs = docentes.map(docente => {
-        //             let id = docente._id;
-        //             if(id in materias_asignadas){
-        //                 docente.materias_asignadas = materias_asignadas[id];
-        //                 docente.horas_cubiertas = horas_cubiertas[id];
-        //             }
-        //             return docente;
-        //         });
-        //         return res.status(200).send(newDocs);
-        //     }))
-        // }));
+        let semester = utils.getSemestre();
+        Materia.find({
+            $and: [
+                { inicio: { $gte: semester.start} },
+                { fin: {$lte: semester.end}}
+            ]
+        }).exec(response(req, res, (req, res, materias) => {
+            DocenteController.find().exec(response(res, res, (req, res, docentes) => {
+                let materias_asignadas = {};
+                let horas_cubiertas = {};
+                materias.forEach(materia => {
+                    let doc = materia.id_docente;
+                    if(doc){
+                        if(!(doc in materias_asignadas)){
+                            materias_asignadas[doc] = 0;
+                            horas_cubiertas[doc] = 0;
+                        }
+                        materias_asignadas[doc]++;
+                        horas_cubiertas[doc] += materia.horas_planta
+                    }
+                });
+                let newDocs = docentes.map(docente => {
+                    let id = docente._id;
+                    if(id in materias_asignadas){
+                        docente.materias_asignadas = materias_asignadas[id];
+                        docente.horas_cubiertas = horas_cubiertas[id];
+                    }
+                    return docente;
+                });
+                return res.status(200).send(newDocs);
+            }))
+        }));
 
     },
 
