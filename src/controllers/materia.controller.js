@@ -55,7 +55,8 @@ const controller = {
                 aula: materia[aulaIndex],
                 horas_totales: materia[creditosIndex]*16,
                 id_jefe_carrera: materia[creadorIndex],
-                codigo: materia[codigoIndex]
+                codigo: materia[codigoIndex],
+                excel: true
             }
         });
 
@@ -81,23 +82,39 @@ const controller = {
                 materiasExcel[materia.codigo] = materia;
             });
 
-            MateriaController.find({codigo: { $in: Object.keys(materiasExcel) }}).exec(response(req, res, (req, res, materias) => {
+            MateriaController.find({codigo: { $in: Object.keys(materiasExcel) }},{_id:0}).exec(response(req, res, (req, res, materias) => {
                 let materiasBD = {};
                 materias.forEach(materia => materiasBD[materia.codigo] = materia);
 
                 let materiasToInsert = [];
 
                 Object.values(materiasExcel).forEach(materia => {
-                    console.log(materia.codigo);
-                    let dataToAssing = (materia.codigo in materiasBD)? materiasBD[materia.codigo] : {};
-                    materiasToInsert.push({}, dataToAssing, materia);
+                    //let dataToAssing = (materia.codigo in materiasBD)? JSON.stringify(materiasBD[materia.codigo]) : {};
+                    let datos = ['silabo_subido', 'aula_revisada', 'examen_revisado', 'contrato_impreso', 'contrato_firmado',
+                        'planilla_lista', 'planilla_firmada', 'cheque_solicitado', 'cheque_recibido', 'cheque_entregado', 'horas_planta'];
+                    if (materia.codigo in materiasBD) {
+                        datos.forEach(dato => {
+                            materia[dato] = materiasBD[materia.codigo][dato]
+                        });
+                    }
+                    materiasToInsert.push(materia);
                 });
+
+                let semestre = utils.getSemestre();
+                MateriaController.deleteMany({
+                    $and: [
+                        { inicio: { $gte: semestre.start} },
+                        { fin: {$lte: semestre.end}},
+                        { excel: true}
+                    ]
+                }, response(req, res, (req, res, eliminadas) => {
+                    MateriaController.create(materiasToInsert, response(req, res, (req, res, materiasCreadas) => {
+                        return res.status(200).send({materias_no_insertadas: errors})
+                    }))
+                }));
 
 
             }));
-            // MateriaController.create(materiasValidas, response(req, res, (req, res, materias) => {
-            //     return res.status(200).send({materias_insertadas:materias, materias_no_insertadas: errors})
-            // }))
         }));
     },
 

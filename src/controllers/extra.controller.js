@@ -38,7 +38,7 @@ const controller = {
         let usuarioId =  req.params.id_usuario;
 
         Usuario.findById(usuarioId, response(req, res, (req, res, usuario) => {
-            let findData = (usuario.role === 'jefe_carrera') ? {id_jefe_carrera: usuario.nombre_corto} : {};
+            let findData = (usuario.rol === 'jefe_carrera') ? {id_jefe_carrera: usuario.nombre_corto} : {};
             if(!usuario.ver_pendientes_pasadas){
                 let semester = utils.getSemestre();
                 findData['$and'] = [
