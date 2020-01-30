@@ -75,6 +75,14 @@ const MateriaSchema = Schema({
         type: Number,
         default: 0,
         max: [this.horas_totales, 'Las horas de planta no pueden ser superiores a las horas totales']
+    },
+    excel: {
+        type: Boolean,
+        default: false
+    },
+    codigo: {
+        type: String,
+        default: ''
     }
 });
 

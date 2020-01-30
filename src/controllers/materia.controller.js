@@ -31,12 +31,11 @@ const controller = {
     },
 
     createMateriasExcel: async function (req, res) {
-        let cols = ['Materia', 'Docente', 'Aula', 'Fecha Inicio', 'Fecha Fin', 'Créditos', 'Creador'];
+        let cols = ['Materia', 'Docente', 'Aula', 'Fecha Inicio', 'Fecha Fin', 'Créditos', 'Creador', 'Código Materia'];
         let excelCols = req.body.excel[3];
         if(!cols.every(val => excelCols.indexOf(val) >= 0)){
             return res.status(500).send({message: 'El archivo excel no tiene el formato correcto'})
         }
-        let index = (array, key) => array[excelCols.indexOf(key)];
         let nombreIndex = excelCols.indexOf('Materia');
         let docenteIndex = excelCols.indexOf('Docente');
         let inicioIndex = excelCols.indexOf('Fecha Inicio');
@@ -44,16 +43,19 @@ const controller = {
         let aulaIndex = excelCols.indexOf('Aula');
         let creditosIndex = excelCols.indexOf('Créditos');
         let creadorIndex = excelCols.indexOf('Creador');
+        let codigoIndex = excelCols.indexOf('Código Materia');
 
         let materias = req.body.excel.slice(5).map(materia => {
             return  {
                 nombre: (materia[nombreIndex]).trim(),
                 id_docente: (materia[docenteIndex]).trim().replace(/\s/g,''),
+                nombre_docente: (materia[docenteIndex]).trim(),
                 inicio: materia[inicioIndex],
                 fin: materia[finIndex],
                 aula: materia[aulaIndex],
                 horas_totales: materia[creditosIndex]*16,
-                id_jefe_carrera: materia[creadorIndex]
+                id_jefe_carrera: materia[creadorIndex],
+                codigo: materia[codigoIndex]
             }
         });
 
@@ -64,7 +66,7 @@ const controller = {
                 if(docente.segundo_nombre) nombre += docente.segundo_nombre;
                 nombres[nombre] = docente.id;
             });
-            let materiasValidas = [];
+            let materiasExcel = {};
             let errors = [];
             let i = 0;
             materias.forEach(materia => {
@@ -72,14 +74,30 @@ const controller = {
                 let nombreDocente = materia.id_docente;
                 if(nombreDocente in nombres){
                     materia['id_docente'] = nombres[materia.id_docente];
-                    materiasValidas.push(materia);
                 }else{
+                    materia['id_docente'] = '';
                     errors.push(`Error en linea ${i+6}, ${materia.nombre}. Docente:  ${nombreDocente}, no registrado en base de datos`);
                 }
+                materiasExcel[materia.codigo] = materia;
             });
-            MateriaController.create(materiasValidas, response(req, res, (req, res, materias) => {
-                return res.status(200).send({materias_insertadas:materias, materias_no_insertadas: errors})
-            }))
+
+            MateriaController.find({codigo: { $in: Object.keys(materiasExcel) }}).exec(response(req, res, (req, res, materias) => {
+                let materiasBD = {};
+                materias.forEach(materia => materiasBD[materia.codigo] = materia);
+
+                let materiasToInsert = [];
+
+                Object.values(materiasExcel).forEach(materia => {
+                    console.log(materia.codigo);
+                    let dataToAssing = (materia.codigo in materiasBD)? materiasBD[materia.codigo] : {};
+                    materiasToInsert.push({}, dataToAssing, materia);
+                });
+
+
+            }));
+            // MateriaController.create(materiasValidas, response(req, res, (req, res, materias) => {
+            //     return res.status(200).send({materias_insertadas:materias, materias_no_insertadas: errors})
+            // }))
         }));
     },
 

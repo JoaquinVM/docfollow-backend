@@ -19,6 +19,10 @@ const controller = {
                 Reset.findIdUpdate(reset._id, {semestre: new Date()}, default_response(req, res));
             }));
         }));
+    },
+
+    lastReset: function(req, res){
+        Reset.findOne({value: 'ModuloDocentes'}).exec(default_response(req, res));
     }
 };
 
